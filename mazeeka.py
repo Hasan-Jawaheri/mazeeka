@@ -8,7 +8,25 @@ import pafy
 from multiprocessing import Pool
 import mazeeka_purifier
 
-PLAYLIST = "PLPBVXKmDPYk1dm-gElmWafOzf_BVpHOZm"
+import argparse
+
+parser = argparse.ArgumentParser(description='Middleware core')
+parser.add_argument("-p", "--playlist", required=True, help="Youtube playlist ID")
+parser.add_argument("-k", "--api-key", required=False, help="Youtube API key")
+parser.add_argument("-v", "--videos", required=False, nargs='+', help="List of video IDs to download (NOT SUPPORTED)")
+cmd_args = parser.parse_args()
+
+PLAYLIST = cmd_args.playlist
+
+if cmd_args.api_key != None:
+    API_KEY = cmd_args.api_key
+else:
+    try:
+        API_KEY = open("api-key.txt", "r").read().strip()
+    except:
+        print ("API key not provided via --api-key nor in api-key.txt file")
+        exit(0)
+
 PLAYLIST_PATH = os.path.join("playlists", PLAYLIST)
 URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=" + PLAYLIST + "&key=" + API_KEY
 
