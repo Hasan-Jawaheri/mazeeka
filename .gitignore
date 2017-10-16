@@ -1,1 +1,13 @@
+.env
+.environment
+.ENV
+.ENVIRONMENT
+env
+environment
+ENV
+ENVIRONMENT
+
 api-key.txt
+
+*.pyc
+__pycache__
