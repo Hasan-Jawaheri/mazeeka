@@ -37,6 +37,10 @@ print ("Retrieving video list...")
 u = URL
 while True:
     R = requests.get(u).json()
+    if "error" in R:
+        for error in R["error"]["errors"]:
+            print (f"{error['reason']}: {error['message']}")
+        exit(0)
     for V in R["items"]:
         vid_ids.append((V["snippet"]["resourceId"]["videoId"], V["snippet"]["title"], V["snippet"].get("thumbnails", {"high":""})["high"]))
     if "nextPageToken" in R:
@@ -44,7 +48,7 @@ while True:
     else:
         break
 
-print ("%d vids!" % len(vid_ids))
+print ("Found %d videos in the playlist." % len(vid_ids))
 
 os.system("mkdir -p " + PLAYLIST_PATH)
 os.system("mkdir -p " + PLAYLIST_PATH + "/m4a/")
